@@ -35,9 +35,10 @@ const char *fragmentShaderSource =
 "uniform vec3 myColor;\n"
 "uniform sampler2D texture1;\n"
 "uniform sampler2D texture2;\n"
+"uniform float opacity;\n"
 "void main()\n"
 "{\n"
-"FragColor = mix(texture(texture1, TexCoord), texture(texture2, TexCoord), 0.2) * vec4(ourColor, 1.0);\n"
+"FragColor = mix(texture(texture1, TexCoord), texture(texture2, TexCoord), opacity) * vec4(ourColor, 1.0);\n"
 "}\n";
 
 int main()
@@ -214,6 +215,7 @@ int main()
 	// either set it manually like so:
 	glUniform1i(glGetUniformLocation(shaderProgram, "texture1"), 0);
 	glUniform1i(glGetUniformLocation(shaderProgram, "texture2"), 1);
+	
 
 	// render loop
 	// -----------
@@ -228,9 +230,19 @@ int main()
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		// change color at very time
-		int colorLoc = glGetUniformLocation(shaderProgram, "myColor");
-		glUniform3f(colorLoc, 0.5f, 0.2f, 0.1f);
+		// get time
+		float time = glfwGetTime();
+
+		// change color at very time of verty vertice
+		vertices[3] = sin(time * 1) / 2 + 0.5f;
+		vertices[11] = sin(time * 2) / 2 + 0.5f;
+		vertices[19] = sin(time * 4) / 2 + 0.5f;
+		glBindBuffer(GL_ARRAY_BUFFER, VBO);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+		// change opacity at very time
+		glUniform1f(glGetUniformLocation(shaderProgram, "opacity"), (float)sin(time) / 2 + 0.5f);
+
 
 		// bind textures on corresponding texture units
 		glActiveTexture(GL_TEXTURE0);
