@@ -190,10 +190,10 @@ int main()
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-	data = stbi_load("face.png", &width, &height, &nrChannels, 0);
+	data = stbi_load("tokyo.jpg", &width, &height, &nrChannels, 0);
 	if (data)
 	{
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
 		glGenerateMipmap(GL_TEXTURE_2D);
 	}
 	else
@@ -235,8 +235,15 @@ int main()
 
 		// change color at very time of verty vertice
 		vertices[3] = sin(time * 1) / 2 + 0.5f;
-		vertices[11] = sin(time * 2) / 2 + 0.5f;
-		vertices[19] = sin(time * 4) / 2 + 0.5f;
+		vertices[12] = sin(time * 2) / 2 + 0.5f;
+		vertices[21] = sin(time * 3) / 2 + 0.5f;
+
+		// change vertice position
+		vertices[0] = sin(time * 7) / 50 + 0.5f;
+		vertices[1] = sin(time * 6) / 50 + 0.5f;
+		vertices[24] = sin(time * 5) / 50 - 0.5f;
+		vertices[25] = sin(time * 4) / 50 + 0.5f;
+
 		glBindBuffer(GL_ARRAY_BUFFER, VBO);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
