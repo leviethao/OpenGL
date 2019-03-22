@@ -239,10 +239,10 @@ int main()
 		vertices[21] = sin(time * 3) / 2 + 0.5f;
 
 		// change vertice position
-		vertices[0] = sin(time * 7) / 50 + 0.5f;
-		vertices[1] = sin(time * 6) / 50 + 0.5f;
-		vertices[24] = sin(time * 5) / 50 - 0.5f;
-		vertices[25] = sin(time * 4) / 50 + 0.5f;
+		vertices[6] = sin(time * 7) / 50 + 1.0f;
+		vertices[7] = sin(time * 6) / 50 + 1.0f;
+		vertices[30] = sin(time * 5) / 50 + 0.0f;
+		vertices[31] = sin(time * 4) / 50 + 1.0f;
 
 		glBindBuffer(GL_ARRAY_BUFFER, VBO);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
