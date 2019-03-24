@@ -1,5 +1,7 @@
 ﻿  shader.cpp
-c:\users\levie\documents\projects\opengl\opengl first\opengl first\shader.cpp(246): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+  transform.cpp
+c:\users\levie\documents\projects\opengl\opengl first\opengl first\transform.cpp(247): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+  Generating Code...
 glfw3.lib(context.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(context.obj)' or at 'C:\Users\levie\Documents\Projects\OpenGL\OpenGL First\Debug\glfw.pdb'; linking object as if no debug info
 glfw3.lib(init.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(init.obj)' or at 'C:\Users\levie\Documents\Projects\OpenGL\OpenGL First\Debug\glfw.pdb'; linking object as if no debug info
 glfw3.lib(input.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(input.obj)' or at 'C:\Users\levie\Documents\Projects\OpenGL\OpenGL First\Debug\glfw.pdb'; linking object as if no debug info
