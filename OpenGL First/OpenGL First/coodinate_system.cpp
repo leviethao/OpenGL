@@ -219,7 +219,7 @@ int main()
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-	data = stbi_load("tokyo.jpg", &width, &height, &nrChannels, 0);
+	data = stbi_load("treemoon.jpg", &width, &height, &nrChannels, 0);
 	if (data)
 	{
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
@@ -275,7 +275,21 @@ int main()
 	float time = 0;
 	float prevTime = 0;
 	float lapseTime = 0;
-	float angle = 0;
+	float angleByTime = 0;
+
+
+	glm::vec3 cubePositions[] = {
+	  glm::vec3(2.0f,  5.0f, -15.0f),
+	  glm::vec3(0.0f,  0.0f,  -1.0f),
+	  glm::vec3(-1.5f, -2.2f, -2.5f),
+	  glm::vec3(-3.8f, -2.0f, -12.3f),
+	  glm::vec3(2.4f, -0.4f, -3.5f),
+	  glm::vec3(-1.7f,  3.0f, -7.5f),
+	  glm::vec3(1.3f, -2.0f, -2.5f),
+	  glm::vec3(1.5f,  2.0f, -2.5f),
+	  glm::vec3(1.5f,  0.2f, -1.5f),
+	  glm::vec3(-1.3f,  1.0f, -1.5f)
+	};
 
 	// render loop
 	// -----------
@@ -301,22 +315,38 @@ int main()
 		lapseTime = time - prevTime;
 		prevTime = time;
 		float angleSpeed = 50;
-		angle += lapseTime * angleSpeed;
-		std::cout << angle << std::endl;
+		angleByTime += lapseTime * angleSpeed;
+		std::cout << angleByTime << std::endl;
 
-		// change opacity at very time
-		glUniform1f(glGetUniformLocation(shaderProgram, "opacity"), /*(float)sin(time) / 2 + 0.5f*/ 1.0);
-
-		// let cube rotate over time
-		model = glm::mat4(1.0f);
-		model = glm::rotate(model, glm::radians(angle), glm::vec3(0.7, 1.0, 0.0));
-		//apply model for vertext shader
-		unsigned int modelLoc = glGetUniformLocation(shaderProgram, "model");
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 
 		// render container
 		glBindVertexArray(VAO);
-		glDrawArrays(GL_TRIANGLES, 0, 36);
+		
+		for (unsigned int i = 0; i < 10; i++)
+		{
+			// fransform model matrix
+			glm::mat4 model = glm::mat4(1.0f);
+			model = glm::translate(model, cubePositions[i]);
+			model = glm::rotate(model, glm::radians(angleByTime * (i % 4 + 1)), glm::vec3(1.0, 0.3, 0.5));
+			//apply model for vertext shader
+			unsigned int modelLoc = glGetUniformLocation(shaderProgram, "model");
+			glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+
+			// transform view matrix
+			glm::mat4 view = glm::mat4(1.0f);
+			// note that we're translating the scene in the reverse direction of where we want to move
+			view = glm::translate(view, glm::vec3(0.0, 0.0, -3.0));
+			// let cube rotate over time
+			view = glm::rotate(view, glm::radians(angleByTime), glm::vec3(1.0, 0.3 * i, 0.5));
+			//apply view for vertext shader
+			unsigned int viewLoc = glGetUniformLocation(shaderProgram, "view");
+			glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
+
+			// change opacity at very time
+			glUniform1f(glGetUniformLocation(shaderProgram, "opacity"), abs((float)sin(time / (i + 1))) - 0.2);
+
+			glDrawArrays(GL_TRIANGLES, 0, 36);
+		}
 
 
 		// glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
