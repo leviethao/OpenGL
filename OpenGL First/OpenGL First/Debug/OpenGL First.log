@@ -1,3 +1,3 @@
-﻿  transform.cpp
-c:\users\levie\documents\projects\opengl\opengl first\opengl first\transform.cpp(245): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+﻿  coodinate_system.cpp
+c:\users\levie\documents\projects\opengl\opengl first\opengl first\coodinate_system.cpp(274): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
   OpenGL First.vcxproj -> C:\Users\levie\Documents\Projects\OpenGL\OpenGL First\Debug\OpenGL First.exe
