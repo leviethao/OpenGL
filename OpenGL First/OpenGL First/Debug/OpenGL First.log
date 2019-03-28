@@ -1,4 +1,4 @@
-﻿  coodinate_system.cpp
-c:\users\levie\documents\projects\opengl\opengl first\opengl first\coodinate_system.cpp(314): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-c:\users\levie\documents\projects\opengl\opengl first\opengl first\coodinate_system.cpp(346): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+﻿  camera.cpp
+c:\users\levie\documents\projects\opengl\opengl first\opengl first\camera.cpp(314): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\levie\documents\projects\opengl\opengl first\opengl first\camera.cpp(353): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
   OpenGL First.vcxproj -> C:\Users\levie\Documents\Projects\OpenGL\OpenGL First\Debug\OpenGL First.exe

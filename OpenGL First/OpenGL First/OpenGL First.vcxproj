@@ -122,6 +122,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\..\..\Downloads\glad\src\glad.c" />
+    <ClCompile Include="camera.cpp" />
     <ClCompile Include="coodinate_system.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="shader.cpp" />
