@@ -13,6 +13,7 @@
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
 void mouse_callback(GLFWwindow *window, double xpos, double ypos);
+void scroll_callback(GLFWwindow *window, double xoffset, double yoffset);
 
 // ============== global variable =========================
 // camera
@@ -36,7 +37,7 @@ float lastY = 300;
 float yaw = 0.0f;
 float pitch = 0.0f;
 bool firstMouse = true;
-
+float fov = 45.0f;
 
 const char *vertexShaderSource = "#version 330 core\n"
 "layout(location = 0) in vec3 aPos;\n"
@@ -311,6 +312,9 @@ int main()
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	// 
 	glfwSetCursorPosCallback(window, mouse_callback);
+	//
+	glfwSetScrollCallback(window, scroll_callback);
+
 
 	// render loop
 	// -----------
@@ -331,14 +335,19 @@ int main()
 		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, texture2);
 
+		// projection matrix
+		glm::mat4 projection;
+		projection = glm::perspective(glm::radians(fov), (float)SCR_WIDTH / SCR_HEIGHT, 0.1f, 100.0f);
+		// apply projection matrixfor vertext shader
+		unsigned int projLoc = glGetUniformLocation(shaderProgram, "projection");
+		glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
+
 		// get time
 		time = glfwGetTime();
 		deltaTime = time - prevTime;
 		prevTime = time;
 		float angleSpeed = 50;
 		angleByTime += deltaTime * angleSpeed;
-		std::cout << angleByTime << std::endl;
-
 
 		// render container
 		glBindVertexArray(VAO);
@@ -450,4 +459,14 @@ void mouse_callback(GLFWwindow *window, double xpos, double ypos)
 	front.y = sin(glm::radians(pitch));
 	front.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
 	cameraFront = glm::normalize(front);
+}
+
+void scroll_callback(GLFWwindow *window, double xoffset, double yoffset)
+{
+	if (fov >= 1.0f && fov <= 45.0f)
+		fov -= yoffset;
+	if (fov < 1.0f)
+		fov = 1.0f;
+	if (fov > 45.0f)
+		fov = 45.0f;
 }

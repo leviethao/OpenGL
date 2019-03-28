@@ -1,10 +1,11 @@
 ﻿  camera.cpp
-c:\users\levie\documents\projects\opengl\opengl first\opengl first\camera.cpp(335): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-c:\users\levie\documents\projects\opengl\opengl first\opengl first\camera.cpp(366): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
-c:\users\levie\documents\projects\opengl\opengl first\opengl first\camera.cpp(426): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-c:\users\levie\documents\projects\opengl\opengl first\opengl first\camera.cpp(427): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-c:\users\levie\documents\projects\opengl\opengl first\opengl first\camera.cpp(431): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-c:\users\levie\documents\projects\opengl\opengl first\opengl first\camera.cpp(432): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-c:\users\levie\documents\projects\opengl\opengl first\opengl first\camera.cpp(433): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-c:\users\levie\documents\projects\opengl\opengl first\opengl first\camera.cpp(434): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\levie\documents\projects\opengl\opengl first\opengl first\camera.cpp(346): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\levie\documents\projects\opengl\opengl first\opengl first\camera.cpp(375): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+c:\users\levie\documents\projects\opengl\opengl first\opengl first\camera.cpp(435): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\levie\documents\projects\opengl\opengl first\opengl first\camera.cpp(436): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\levie\documents\projects\opengl\opengl first\opengl first\camera.cpp(440): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\users\levie\documents\projects\opengl\opengl first\opengl first\camera.cpp(441): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\users\levie\documents\projects\opengl\opengl first\opengl first\camera.cpp(442): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\levie\documents\projects\opengl\opengl first\opengl first\camera.cpp(443): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\levie\documents\projects\opengl\opengl first\opengl first\camera.cpp(467): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
   OpenGL First.vcxproj -> C:\Users\levie\Documents\Projects\OpenGL\OpenGL First\Debug\OpenGL First.exe
