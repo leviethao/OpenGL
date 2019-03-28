@@ -13,10 +13,15 @@
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
 
-// set up camera global variable
+// global variable
 glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
 glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
 glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
+
+float time = 0;
+float prevTime = 0;
+float deltaTime = 0;
+float angleByTime = 0;
 
 // settings
 const unsigned int SCR_WIDTH = 800;
@@ -277,11 +282,6 @@ int main()
 	// Enable depth testing (z-buffer)
 	glEnable(GL_DEPTH_TEST);
 
-	float time = 0;
-	float prevTime = 0;
-	float lapseTime = 0;
-	float angleByTime = 0;
-
 
 	glm::vec3 cubePositions[] = {
 	  glm::vec3(2.0f,  5.0f, -15.0f),
@@ -317,10 +317,10 @@ int main()
 
 		// get time
 		time = glfwGetTime();
-		lapseTime = time - prevTime;
+		deltaTime = time - prevTime;
 		prevTime = time;
 		float angleSpeed = 50;
-		angleByTime += lapseTime * angleSpeed;
+		angleByTime += deltaTime * angleSpeed;
 		std::cout << angleByTime << std::endl;
 
 
@@ -378,7 +378,7 @@ void processInput(GLFWwindow *window)
 		glfwSetWindowShouldClose(window, true);
 
 	// handle input for camera
-	float cameraSpeed = 0.05f;
+	float cameraSpeed = 20.0f * deltaTime;
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
 		cameraPos += cameraSpeed * cameraFront;
 	}
