@@ -14,6 +14,12 @@ void processInput(GLFWwindow *window);
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
 
+//// ============== global variable =========================
+//// camera
+glm::vec3 cameraPos = glm::vec3(2.0f, 4.0f, 10.0f);
+glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
+glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
+
 glm::vec3 lightPos = glm::vec3(0.5f, 1.0f, -3.0f);
 
 const char *vertexShaderSource = "#version 330 core\n"
@@ -37,6 +43,7 @@ const char *fragmentShaderSource = "#version 330 core\n"
 "uniform vec3 lightColor;\n"
 "uniform vec3 objectColor;\n"
 "uniform vec3 lightPos;\n"
+"uniform vec3 viewPos;\n"
 
 "void main () { \n"
 "float ambientStrength = 0.1f;\n"
@@ -44,8 +51,15 @@ const char *fragmentShaderSource = "#version 330 core\n"
 "vec3 norm = normalize(Normal);\n"
 "vec3 lightDir = normalize(lightPos - FragPos);\n"
 "float diff = max(dot(norm, lightDir), 0.0);\n"
-"vec3 diffuse = diff * lightColor;"
-"vec3 result = (ambient + diffuse) * objectColor;\n"
+"vec3 diffuse = diff * lightColor;\n"
+
+"float specularStrength = 0.5;\n"
+"vec3 viewDir = normalize(viewPos - FragPos);\n"
+"vec3 reflectDir = reflect(-lightDir, norm);\n"
+"float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);\n"
+"vec3 specular = specularStrength * spec * lightColor;\n"
+
+"vec3 result = (ambient + diffuse + specular) * objectColor;\n"
 "FragColor = vec4(result, 1.0);\n"
 "} \n";
 
@@ -278,9 +292,10 @@ int main()
 		glm::mat4 model = glm::mat4(1.0f);
 		model = glm::translate(model, glm::vec3(0.f, 0.f, -5.0f));
 		model = glm::rotate(model, glm::radians(-55.0f), glm::vec3(0.0, 1.0, 0.0));
-		//model = glm::rotate(model, glm::radians(30.0f), glm::vec3(0.0, 1.0, 0.0));
+		model = glm::scale(model, glm::vec3(3.f));
 		glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "model"), 1, GL_FALSE, glm::value_ptr(model));
 		glm::mat4 view = glm::mat4(1.0f);
+		view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
 		glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "view"), 1, GL_FALSE, glm::value_ptr(view));
 		glm::mat4 projection = glm::mat4(1.0f);
 		projection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
@@ -289,6 +304,7 @@ int main()
 		glUniform3f(glGetUniformLocation(shaderProgram, "objectColor"), 1.0f, 0.5f, 0.31f);
 		glUniform3f(glGetUniformLocation(shaderProgram, "lightColor"), 1.0f, 1.0f, 1.0f);
 		glUniform3f(glGetUniformLocation(shaderProgram, "lightPos"), lightPos.x, lightPos.y, lightPos.z);
+		glUniform3f(glGetUniformLocation(shaderProgram, "viewPos"), cameraPos.x, cameraPos.y, cameraPos.z);
 
 		// draw container
 		glBindVertexArray(cubeVAO);
