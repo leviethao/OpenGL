@@ -25,7 +25,7 @@ const char *vertexShaderSource = "#version 330 core\n"
 "uniform mat4 view;\n"
 "uniform mat4 projection;\n"
 "void main () {\n"
-"Normal = aNormal;\n"
+"Normal = mat3(transpose(inverse(model))) * aNormal;\n"
 "FragPos = vec3(model * vec4(aPos, 1.0));\n"
 "gl_Position = projection * view * vec4(FragPos, 1.0);\n"
 "} \n";
@@ -277,8 +277,8 @@ int main()
 		//set uniform
 		glm::mat4 model = glm::mat4(1.0f);
 		model = glm::translate(model, glm::vec3(0.f, 0.f, -5.0f));
-		model = glm::rotate(model, glm::radians(30.0f), glm::vec3(1.0, 0.0, 0.0));
-		model = glm::rotate(model, glm::radians(30.0f), glm::vec3(0.0, 1.0, 0.0));
+		model = glm::rotate(model, glm::radians(-55.0f), glm::vec3(0.0, 1.0, 0.0));
+		//model = glm::rotate(model, glm::radians(30.0f), glm::vec3(0.0, 1.0, 0.0));
 		glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "model"), 1, GL_FALSE, glm::value_ptr(model));
 		glm::mat4 view = glm::mat4(1.0f);
 		glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "view"), 1, GL_FALSE, glm::value_ptr(view));
