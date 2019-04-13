@@ -9,17 +9,17 @@ c:\users\levie\documents\projects\opengl\opengl first\opengl first\lighting.cpp(
           [
               T=float
           ]
-c:\users\levie\documents\projects\opengl\opengl first\opengl first\lighting.cpp(328): warning C4244: '=': conversion from 'double' to 'T', possible loss of data
-          with
-          [
-              T=float
-          ]
-c:\users\levie\documents\projects\opengl\opengl first\opengl first\lighting.cpp(329): warning C4244: '=': conversion from 'double' to 'T', possible loss of data
-          with
-          [
-              T=float
-          ]
 c:\users\levie\documents\projects\opengl\opengl first\opengl first\lighting.cpp(330): warning C4244: '=': conversion from 'double' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+c:\users\levie\documents\projects\opengl\opengl first\opengl first\lighting.cpp(331): warning C4244: '=': conversion from 'double' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+c:\users\levie\documents\projects\opengl\opengl first\opengl first\lighting.cpp(332): warning C4244: '=': conversion from 'double' to 'T', possible loss of data
           with
           [
               T=float

@@ -16,11 +16,11 @@ const unsigned int SCR_HEIGHT = 600;
 
 //// ============== global variable =========================
 //// camera
-glm::vec3 cameraPos = glm::vec3(2.0f, 4.0f, 10.0f);
+glm::vec3 cameraPos = glm::vec3(7.0f, -1.0f, 20.0f);
 glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
 glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
 
-glm::vec3 lightPos = glm::vec3(0.5f, 1.0f, -3.0f);
+glm::vec3 lightPos = glm::vec3(0.5f, 3.0f, -3.0f);
 
 const char *vertexShaderSource = "#version 330 core\n"
 "layout (location = 0) in vec3 aPos;\n"
@@ -297,60 +297,65 @@ int main()
 
 
 		// update lightPos
-		lightPos.x = 0.5f + sin(glfwGetTime()) * 3;
-		lightPos.z = -3.0f + cos(glfwGetTime()) * 3;
+		lightPos.x = 5.f + sin(glfwGetTime()) * 5;
+		lightPos.z = -10.0f + cos(glfwGetTime()) * 5;
 
 		//setup for container
 		// 
 		glUseProgram(shaderProgram);
 
-		//set uniform
-		glm::mat4 model = glm::mat4(1.0f);
-		model = glm::translate(model, glm::vec3(0.f, 0.f, -5.0f));
-		model = glm::rotate(model, glm::radians(-55.0f), glm::vec3(0.0, 1.0, 0.0));
-		model = glm::scale(model, glm::vec3(3.f));
-		glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "model"), 1, GL_FALSE, glm::value_ptr(model));
-		glm::mat4 view = glm::mat4(1.0f);
-		view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
-		glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "view"), 1, GL_FALSE, glm::value_ptr(view));
-		glm::mat4 projection = glm::mat4(1.0f);
-		projection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
-		glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
+		for (int i = 1; i < 5; i++)
+		{
+			//set uniform
+			glm::mat4 model = glm::mat4(1.0f);
+			model = glm::translate(model, glm::vec3(i * 5.f, i * 3.f, -10.f));
+			model = glm::rotate(model, glm::radians(-55.0f), glm::vec3(0.0, 1.0, 0.0));
+			model = glm::scale(model, glm::vec3(3.f));
+			glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "model"), 1, GL_FALSE, glm::value_ptr(model));
+			glm::mat4 view = glm::mat4(1.0f);
+			view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
+			glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "view"), 1, GL_FALSE, glm::value_ptr(view));
+			glm::mat4 projection = glm::mat4(1.0f);
+			projection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+			glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
 
+
+			glUniform3f(glGetUniformLocation(shaderProgram, "viewPos"), cameraPos.x, cameraPos.y, cameraPos.z);
+			glUniform3f(glGetUniformLocation(shaderProgram, "material.ambient"), 0.19225f, 0.19225f, 0.19225f);
+			glUniform3f(glGetUniformLocation(shaderProgram, "material.diffuse"), 0.50754f, 0.50754f, 0.50754f);
+			glUniform3f(glGetUniformLocation(shaderProgram, "material.specular"), 0.508273f, 0.508273f, 0.508273f);
+			glUniform1f(glGetUniformLocation(shaderProgram, "material.shininess"), 16.0f);
+
+			glm::vec3 lightColor;
+			lightColor.x = sin(glfwGetTime() * 0.2f);
+			lightColor.y = sin(glfwGetTime() * 0.7f);
+			lightColor.z = sin(glfwGetTime() * 1.3f);
+
+			glm::vec3 diffuseColor = glm::vec3(1.0f);//lightColor * glm::vec3(0.5f);
+			glm::vec3 ambientColor = glm::vec3(1.0f);//lightColor * glm::vec3(0.2f);
+
+			glUniform3f(glGetUniformLocation(shaderProgram, "light.ambient"), ambientColor.x, ambientColor.y, ambientColor.z);
+			glUniform3f(glGetUniformLocation(shaderProgram, "light.diffuse"), diffuseColor.x, diffuseColor.y, diffuseColor.z);
+			glUniform3f(glGetUniformLocation(shaderProgram, "light.specular"), 1.0f, 1.0f, 1.0f);
+			glUniform3f(glGetUniformLocation(shaderProgram, "light.position"), lightPos.x, lightPos.y, lightPos.z);
+
+			// draw container
+			glBindVertexArray(cubeVAO);
+			glDrawArrays(GL_TRIANGLES, 0, 36);
+		}
 		
-		glUniform3f(glGetUniformLocation(shaderProgram, "viewPos"), cameraPos.x, cameraPos.y, cameraPos.z);
-		glUniform3f(glGetUniformLocation(shaderProgram, "material.ambient"), 0.19225f, 0.19225f, 0.19225f);
-		glUniform3f(glGetUniformLocation(shaderProgram, "material.diffuse"), 0.50754f, 0.50754f, 0.50754f);
-		glUniform3f(glGetUniformLocation(shaderProgram, "material.specular"), 0.508273f, 0.508273f, 0.508273f);
-		glUniform1f(glGetUniformLocation(shaderProgram, "material.shininess"), 16.0f);
-
-		glm::vec3 lightColor;
-		lightColor.x = sin(glfwGetTime() * 0.2f);
-		lightColor.y = sin(glfwGetTime() * 0.7f);
-		lightColor.z = sin(glfwGetTime() * 1.3f);
-
-		glm::vec3 diffuseColor = glm::vec3(1.0f);//lightColor * glm::vec3(0.5f);
-		glm::vec3 ambientColor = glm::vec3(1.0f);//lightColor * glm::vec3(0.2f);
-
-		glUniform3f(glGetUniformLocation(shaderProgram, "light.ambient"), ambientColor.x, ambientColor.y, ambientColor.z);
-		glUniform3f(glGetUniformLocation(shaderProgram, "light.diffuse"), diffuseColor.x, diffuseColor.y, diffuseColor.z);
-		glUniform3f(glGetUniformLocation(shaderProgram, "light.specular"), 1.0f, 1.0f, 1.0f);
-		glUniform3f(glGetUniformLocation(shaderProgram, "light.position"), lightPos.x, lightPos.y, lightPos.z);
-
-		// draw container
-		glBindVertexArray(cubeVAO);
-		glDrawArrays(GL_TRIANGLES, 0, 36);
-
 
 		// setup for lamp
 		glUseProgram(lampShaderProgram);
 
 		//set uniform
-		model = glm::mat4(1.0f);
+		glm::mat4 model = glm::mat4(1.0f);
 		model = glm::translate(model, lightPos);
 		model = glm::scale(model, glm::vec3(0.2f));
 		glUniformMatrix4fv(glGetUniformLocation(lampShaderProgram, "model"), 1, GL_FALSE, glm::value_ptr(model));
+		glm::mat4 view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
 		glUniformMatrix4fv(glGetUniformLocation(lampShaderProgram, "view"), 1, GL_FALSE, glm::value_ptr(view));
+		glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
 		glUniformMatrix4fv(glGetUniformLocation(lampShaderProgram, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
 
 		// draw light object
