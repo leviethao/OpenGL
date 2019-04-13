@@ -37,29 +37,40 @@ const char *vertexShaderSource = "#version 330 core\n"
 "} \n";
 
 const char *fragmentShaderSource = "#version 330 core\n"
+"struct Material {\n"
+"vec3 ambient;\n"
+"vec3 diffuse;\n"
+"vec3 specular;\n"
+"float shininess;\n"
+"};\n"
+
+"struct Light {\n"
+"vec3 position;\n"
+"vec3 ambient;\n"
+"vec3 diffuse;\n"
+"vec3 specular;\n"
+"};\n"
+
 "in vec3 Normal;\n"
 "in vec3 FragPos;\n"
 "out vec4 FragColor;\n"
-"uniform vec3 lightColor;\n"
-"uniform vec3 objectColor;\n"
-"uniform vec3 lightPos;\n"
 "uniform vec3 viewPos;\n"
+"uniform Material material;\n"
+"uniform Light light;\n"
 
 "void main () { \n"
-"float ambientStrength = 0.1f;\n"
-"vec3 ambient = ambientStrength * lightColor;\n"
+"vec3 ambient = light.ambient * material.ambient;\n"
 "vec3 norm = normalize(Normal);\n"
-"vec3 lightDir = normalize(lightPos - FragPos);\n"
+"vec3 lightDir = normalize(light.position - FragPos);\n"
 "float diff = max(dot(norm, lightDir), 0.0);\n"
-"vec3 diffuse = diff * lightColor;\n"
+"vec3 diffuse = light.diffuse * (diff * material.diffuse);\n"
 
-"float specularStrength = 0.5;\n"
 "vec3 viewDir = normalize(viewPos - FragPos);\n"
 "vec3 reflectDir = reflect(-lightDir, norm);\n"
-"float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);\n"
-"vec3 specular = specularStrength * spec * lightColor;\n"
+"float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);\n"
+"vec3 specular = light.specular * (spec * material.specular);\n"
 
-"vec3 result = (ambient + diffuse + specular) * objectColor;\n"
+"vec3 result = ambient + diffuse + specular;\n"
 "FragColor = vec4(result, 1.0);\n"
 "} \n";
 
@@ -284,6 +295,11 @@ int main()
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+
+		// update lightPos
+		lightPos.x = 0.5f + sin(glfwGetTime()) * 3;
+		lightPos.z = -3.0f + cos(glfwGetTime()) * 3;
+
 		//setup for container
 		// 
 		glUseProgram(shaderProgram);
@@ -301,10 +317,25 @@ int main()
 		projection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
 		glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
 
-		glUniform3f(glGetUniformLocation(shaderProgram, "objectColor"), 1.0f, 0.5f, 0.31f);
-		glUniform3f(glGetUniformLocation(shaderProgram, "lightColor"), 1.0f, 1.0f, 1.0f);
-		glUniform3f(glGetUniformLocation(shaderProgram, "lightPos"), lightPos.x, lightPos.y, lightPos.z);
+		
 		glUniform3f(glGetUniformLocation(shaderProgram, "viewPos"), cameraPos.x, cameraPos.y, cameraPos.z);
+		glUniform3f(glGetUniformLocation(shaderProgram, "material.ambient"), 0.19225f, 0.19225f, 0.19225f);
+		glUniform3f(glGetUniformLocation(shaderProgram, "material.diffuse"), 0.50754f, 0.50754f, 0.50754f);
+		glUniform3f(glGetUniformLocation(shaderProgram, "material.specular"), 0.508273f, 0.508273f, 0.508273f);
+		glUniform1f(glGetUniformLocation(shaderProgram, "material.shininess"), 16.0f);
+
+		glm::vec3 lightColor;
+		lightColor.x = sin(glfwGetTime() * 0.2f);
+		lightColor.y = sin(glfwGetTime() * 0.7f);
+		lightColor.z = sin(glfwGetTime() * 1.3f);
+
+		glm::vec3 diffuseColor = glm::vec3(1.0f);//lightColor * glm::vec3(0.5f);
+		glm::vec3 ambientColor = glm::vec3(1.0f);//lightColor * glm::vec3(0.2f);
+
+		glUniform3f(glGetUniformLocation(shaderProgram, "light.ambient"), ambientColor.x, ambientColor.y, ambientColor.z);
+		glUniform3f(glGetUniformLocation(shaderProgram, "light.diffuse"), diffuseColor.x, diffuseColor.y, diffuseColor.z);
+		glUniform3f(glGetUniformLocation(shaderProgram, "light.specular"), 1.0f, 1.0f, 1.0f);
+		glUniform3f(glGetUniformLocation(shaderProgram, "light.position"), lightPos.x, lightPos.y, lightPos.z);
 
 		// draw container
 		glBindVertexArray(cubeVAO);

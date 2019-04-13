@@ -1,2 +1,27 @@
 ﻿  lighting.cpp
+c:\users\levie\documents\projects\opengl\opengl first\opengl first\lighting.cpp(300): warning C4244: '=': conversion from 'double' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+c:\users\levie\documents\projects\opengl\opengl first\opengl first\lighting.cpp(301): warning C4244: '=': conversion from 'double' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+c:\users\levie\documents\projects\opengl\opengl first\opengl first\lighting.cpp(328): warning C4244: '=': conversion from 'double' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+c:\users\levie\documents\projects\opengl\opengl first\opengl first\lighting.cpp(329): warning C4244: '=': conversion from 'double' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+c:\users\levie\documents\projects\opengl\opengl first\opengl first\lighting.cpp(330): warning C4244: '=': conversion from 'double' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
   OpenGL First.vcxproj -> C:\Users\levie\Documents\Projects\OpenGL\OpenGL First\Debug\OpenGL First.exe
